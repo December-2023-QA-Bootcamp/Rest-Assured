@@ -10,15 +10,21 @@ import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import util.ConfigEnv;
-import util.Constant;
+import util.EnvProperties;
 
 public abstract class APIBaseStep {
 
 	private RequestSpecification requestSpec;
 	private Response response;
 	
-	public void build(Constant constant) {
-		ConfigEnv env = new ConfigEnv(constant.getValue());
+	/**
+	 * This method will initialize the RequestSpecification object {@link RequestSpecification}
+	 * ConfigEnv will get the environment {@link ConfigEnv}
+	 * @param constant {@link EnvProperties}
+	 * Which environment will run Constant will get the URL
+	 */
+	public void build(EnvProperties constant) {
+		ConfigEnv env = new ConfigEnv(constant.getFileName());
 		
 		requestSpec = RestAssured.given();
 		setEnvironment(env.get(constant.getKey()));
@@ -30,6 +36,14 @@ public abstract class APIBaseStep {
 	
 	public void setEndpoint(String endpoint) {
 		requestSpec.basePath(endpoint);
+	}
+	
+	public void setPathParam(String param, Object paramValue) {
+		requestSpec.pathParam(param, paramValue);
+	}
+	
+	public void setQueryParam(String param, Object paramValue) {
+		requestSpec.queryParam(param, paramValue);
 	}
 	
 	public void setContentType(ContentType contentType) {
@@ -62,26 +76,37 @@ public abstract class APIBaseStep {
 	
 	public Response getRequest() {
 		requestSpec.log().all();
-		return response = requestSpec.get();
+		response = requestSpec.get();
+		response.then().log().all();
+		return response;
 	}
 	
 	public Response postRequest() {
 		requestSpec.log().all();
-		return response = requestSpec.post();
+		response = requestSpec.post();
+		response.then().log().all();
+		return response;
 	}
 	
 	public Response putRequest() {
 		requestSpec.log().all();
-		return response = requestSpec.put();
+		response = requestSpec.put();
+		response.then().log().all();
+		return response;
 	}
 	
 	public Response deleteRequest() {
 		requestSpec.log().all();
-		return response = requestSpec.delete();
+		response = requestSpec.delete();
+		response.then().log().all();
+		return response;
 	}
 	
 	public Response getResponse() {
-		response.then().log().all();
 		return response;
+	}
+	
+	public int getStatusCode() {
+		return response.getStatusCode();
 	}
 }

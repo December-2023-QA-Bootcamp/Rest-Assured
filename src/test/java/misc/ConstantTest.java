@@ -4,7 +4,7 @@ import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Test;
 
-import util.Constant;
+import util.EnvProperties;
 
 public class ConstantTest {
 
@@ -12,8 +12,8 @@ public class ConstantTest {
 	
 	@Test
 	public void test() {
-		String filedName 	= Constant.LOCAL_ENV.name();
-		String value		= Constant.LOCAL_ENV.toString();
+		String filedName 	= EnvProperties.LOCAL_ENV.name();
+		String value		= EnvProperties.LOCAL_ENV.toString();
 		
 		LOGGER.info("Filed Name 	: " + filedName);
 		LOGGER.info("Filed Value 	: " + value);

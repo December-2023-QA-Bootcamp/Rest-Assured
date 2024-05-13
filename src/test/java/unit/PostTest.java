@@ -11,14 +11,14 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import util.ConfigEnv;
-import util.Constant;
+import util.EnvProperties;
 
 public class PostTest {
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
-	Constant envConstant = Constant.LOCAL_ENV;
-	ConfigEnv env = new ConfigEnv(envConstant.getValue());
+	EnvProperties envConstant = EnvProperties.LOCAL_ENV;
+	ConfigEnv env = new ConfigEnv(envConstant.getFileName());
 	
 	//@Test
 	public void stringBodyPostTest() {
